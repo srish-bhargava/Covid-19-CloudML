@@ -1,0 +1,6 @@
+numpy
+pandas
+Keras
+Theano
+tensorflow
+xlrd==0.9.0
