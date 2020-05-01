@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-inference
+  labels:
+    apps: proj-inference
+spec:
+  selector:
+    matchLabels:
+      app: proj-inference
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: proj-inference
+    spec:
+        containers:
+          - name: proj-inference-container
+            image: ds1952/proj2:latest
+            volumeMounts:
+              - mountPath: "/tmp"
+                name: test-store
+            ports:
+            - containerPort: 8001
+        volumes:
+          - name: test-store
+            hostPath:
+              path: "/var/tmp"
+
+
+      
+        
+          
+            
+
+          
+            
+              
