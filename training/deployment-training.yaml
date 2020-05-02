@@ -11,7 +11,7 @@ spec:
             path: "/var/tmp"
       containers:
         - name: tweets-training
-          image: ds1952/proj2:latest
+          image: srishti95/neuralnet_sentiment:1.0.0
           volumeMounts:
             - mountPath: "/tmp"
               name: test-store

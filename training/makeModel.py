@@ -1,6 +1,7 @@
 import json
 import keras
 import keras.preprocessing.text as kpt
+from keras import backend as K
 from keras.preprocessing.text import Tokenizer
 import numpy as np
 import pandas as pd
@@ -93,9 +94,10 @@ model.fit(train_x, train_y,
     shuffle=True)
 
 model_json = model.to_json()
-with open('model.json', 'w') as json_file:
+with open('/tmp/model.json', 'w') as json_file:
     json_file.write(model_json)
 
 model.save_weights('/tmp/model1.h5')
 
 print('saved model!')
+K.clear_session()
