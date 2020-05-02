@@ -3,17 +3,39 @@ import keras
 import keras.preprocessing.text as kpt
 from keras.preprocessing.text import Tokenizer
 import numpy as np
+import pandas as pd
+import re
 
-# extract data from a csv
-# notice the cool options to skip lines at the beginning
-# and to only take data from certain columns
-training = np.genfromtxt('/home/dsabba/Dropbox/DanielSabba/career/NYU/Cloud_ML/Proj2/Covid-19-CloudML/inference/SentimentAnalysisDataset.csv', delimiter=',', skip_header=1, usecols=(1, 3), dtype=None)
+training = pd.read_csv('Airlinetweets.csv')
 
 # create our training data from the tweets
-train_x = [x[1] for x in training]
-# index all the sentiment labels
-train_y = np.asarray([x[0] for x in training])
 
+#train_x = [x[1] for x in training]
+# index all the sentiment labels
+#train_y = np.asarray([x[0] for x in training])
+train_x = training['text']
+train_y = training['type']
+
+macronum=sorted(set(training['type']))
+#print ("dictionary" + macronum)
+macro_to_id = dict((note, number) for number, note in enumerate(macronum))
+
+def fun(i):
+    return macro_to_id[i]
+
+train_y=training['type'].apply(fun)
+
+
+texts = []
+for tweet in training['text']:
+    tweet = tweet.lower() # convert text to lower-case
+    tweet = re.sub('((www\.[^\s]+)|(https?://[^\s]+))', 'URL', tweet) # remove URLs
+    tweet = re.sub('@[^\s]+', 'AT_USER', tweet) # remove usernames
+    tweet = re.sub(r'#([^\s]+)', r'\1', tweet) 
+    #print (tweet)
+    texts.append(tweet)
+
+train_x = texts
 # only work with the 3000 most popular words found in our dataset
 max_words = 3000
 
@@ -25,7 +47,7 @@ tokenizer.fit_on_texts(train_x)
 # Tokenizers come with a convenient list of words and IDs
 dictionary = tokenizer.word_index
 # Let's save this out so we can use it later
-with open('dictionary.json', 'w') as dictionary_file:
+with open('/tmp/dictionary.json', 'w') as dictionary_file:
     json.dump(dictionary, dictionary_file)
 
 def convert_text_to_index_array(text):
@@ -47,17 +69,17 @@ allWordIndices = np.asarray(allWordIndices)
 # create one-hot matrices out of the indexed tweets
 train_x = tokenizer.sequences_to_matrix(allWordIndices, mode='binary')
 # treat the labels as categories
-train_y = keras.utils.to_categorical(train_y, 2)
-
+train_y = keras.utils.to_categorical(train_y)
+print (train_y.shape)
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation
 
 model = Sequential()
-model.add(Dense(512, input_shape=(max_words,), activation='relu'))
+model.add(Dense(512, input_shape=(max_words,), activation='sigmoid'))
 model.add(Dropout(0.5))
 model.add(Dense(256, activation='sigmoid'))
 model.add(Dropout(0.5))
-model.add(Dense(2, activation='softmax'))
+model.add(Dense(3, activation='softmax'))
 
 model.compile(loss='categorical_crossentropy',
     optimizer='adam',
@@ -74,6 +96,6 @@ model_json = model.to_json()
 with open('model.json', 'w') as json_file:
     json_file.write(model_json)
 
-model.save_weights('model.h5')
+model.save_weights('/tmp/model1.h5')
 
 print('saved model!')
