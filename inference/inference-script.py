@@ -10,7 +10,7 @@ from keras.preprocessing.text import Tokenizer
 tokenizer = Tokenizer(num_words=1000)
 
 # for human-friendly printing
-labels = ['sports', 'entertainment', 'medical', 'politics']
+labels = ['negative', 'neutral','positive']
 
 
 # read in our saved dictionary
@@ -39,7 +39,7 @@ json_file.close()
 model = model_from_json(loaded_model_json)
 
 # and weight your nodes with your saved values
-model.load_weights('model.h5')
+model.load_weights('model1.h5')
 
 while 1:
     #for python 2
