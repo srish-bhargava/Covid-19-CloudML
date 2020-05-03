@@ -65,7 +65,7 @@ $ kubectl describe service/inference-service2
 
 Go to 
 http://<EXTERNAL IP>:<NODEPORT>/?name="TWITTER TO TEST"
-http://184.172.233.161:8001/?name="beautiful nice awesome"
+http://184.172.233.161:32723/?name="beautiful nice awesome"
 
 #9: KubeConfig and certificate file (.pem) found in ~/.bluemix/plugins/container-service/clusters/ have been provided
 
