@@ -7,7 +7,7 @@ from keras.preprocessing.text import Tokenizer
 
 # we're still going to use a Tokenizer here, but we don't need to fit it
 # tokenizer = Tokenizer(num_words=3000)
-tokenizer = Tokenizer(num_words=1000)
+tokenizer = Tokenizer(num_words=3000)
 
 # for human-friendly printing
 labels = ['negative', 'neutral','positive']
