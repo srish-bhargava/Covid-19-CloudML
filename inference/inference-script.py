@@ -14,7 +14,7 @@ labels = ['negative', 'neutral','positive']
 
 
 # read in our saved dictionary
-with open('dictionary.json', 'r') as dictionary_file:
+with open('/tmp/dictionary.json', 'r') as dictionary_file:
     dictionary = json.load(dictionary_file)
 
 # this utility makes sure that all the words in your input
@@ -31,7 +31,7 @@ def convert_text_to_index_array(text):
     return wordIndices
 
 # read in your saved model structure
-json_file = open('model.json', 'r')
+json_file = open('/tmp/model.json', 'r')
 loaded_model_json = json_file.read()
 json_file.close()
 
@@ -39,7 +39,7 @@ json_file.close()
 model = model_from_json(loaded_model_json)
 
 # and weight your nodes with your saved values
-model.load_weights('model1.h5')
+model.load_weights('/tmp/model1.h5')
 
 while 1:
     #for python 2
