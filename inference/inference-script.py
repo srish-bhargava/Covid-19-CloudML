@@ -40,7 +40,7 @@ model = model_from_json(loaded_model_json)
 
 # and weight your nodes with your saved values
 model.load_weights('/tmp/model1.h5')
-
+'''
 while 1:
     #for python 2
     # evalSentence = raw_input('Input a sentence to be evaluated, or Enter to quit: ')
@@ -56,3 +56,11 @@ while 1:
 
     pred = model.predict(input_value)
     print("%s sentiment; %f%% confidence" % (labels[np.argmax(pred)], pred[0][np.argmax(pred)] * 100))
+'''
+# TO DELETE WHEN FLASK CREATED
+evalSentence = "good awesome amazing"
+print("tweet to test: " + evalSentence)
+testArr = convert_text_to_index_array(evalSentence)
+input_value = tokenizer.sequences_to_matrix([testArr], mode='binary')
+pred = model.predict(input_value)
+print("%s sentiment; %f%% confidence" % (labels[np.argmax(pred)], pred[0][np.argmax(pred)] * 100))
