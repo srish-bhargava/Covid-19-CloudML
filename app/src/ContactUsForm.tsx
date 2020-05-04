@@ -8,7 +8,7 @@ export const ContactUsForm: React.SFC = () => {
       id: "model_number",
       label: "Method",
       editor: "dropdown",
-      options: ["","1", "2"],
+      options: ["","0", "1"],
       validation: { rule: required }
     },
     tweet: {
@@ -20,7 +20,7 @@ export const ContactUsForm: React.SFC = () => {
   };
   return (
     <Form
-      action="http://localhost:4351/"
+      action="https://8d96a99e.ngrok.io/"
       fields={fields}
       render={() => (
         <React.Fragment>

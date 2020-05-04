@@ -85,7 +85,7 @@ export interface IErrors {
 
 export interface IResponse {
   confidence : string,
-  predictions: string
+  prediction : string
 }
 
 export interface IFormState {
@@ -173,7 +173,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
     console.log(this.state.values);
 
     if (this.validateForm()) {
-      const response: IResponse = await this.submitForm();
+      const response: IResponse | undefined = await this.submitForm();
       if(response !== undefined){
         this.setState({submitSuccess:true,
         response})
@@ -202,42 +202,30 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * Submits the form to the http api
    * @returns {boolean} - Whether the form submission was successful or not
    */
-  private async submitForm(): Promise<IResponse> {
-    // try {
-    //   console.log(this.state.values);
-    //   let url = this.props.action+"?";
-    //   for (const key in this.state.values) {
-    //     if (this.state.values.hasOwnProperty(key)) {
-    //       url += key +"="+this.state.values[key]+"&"
-    //     }
-    //   }
-    //   const response = await fetch(url, {
-    //     method: "get",
-    //     headers: new Headers({
-    //       Accept: "application/json"
-    //     }),
-    //     // body: JSON.stringify(this.state.values)
-    //   });
-    //   if (response.status === 400) {
-    //     /* Map any validation errors to IErrors */
-    //     let responseBody: any;
-    //     responseBody = await response.json();
-    //     const errors: IErrors = {};
-    //     Object.keys(responseBody).map((key: string) => {
-    //       // For ASP.NET core, the field names are in title case - so convert to camel case
-    //       const fieldName = key.charAt(0).toLowerCase() + key.substring(1);
-    //       errors[fieldName] = responseBody[key];
-    //     });
-    //     this.setState({ errors });
-    //   }
-    //   return response.ok;
-    // } catch (ex) {
-    //   return false;
-    // }
-    return {
-      "confidence" : "30%",
-      "predictions": "positive"
-    } as IResponse
+  private async submitForm(): Promise<IResponse | undefined> {
+    try {
+      console.log(this.state.values);
+      let url = this.props.action+"?";
+      for (const key in this.state.values) {
+        if (this.state.values.hasOwnProperty(key)) {
+          url += key +"="+this.state.values[key]+"&"
+        }
+      }
+      return await fetch(url, {
+        method: "get",
+        headers: new Headers({
+          Accept: "application/json"
+        })
+        // body: JSON.stringify(this.state.values)
+      }).then(response => response.json())
+      .then(data => {
+        console.log(data);
+        return data as IResponse
+      });
+    } catch (ex) {
+      return undefined;
+    }
+    
   }
 
   public render() {
@@ -247,10 +235,6 @@ export class Form extends React.Component<IFormProps, IFormState> {
       setValues: this.setValues,
       validate: this.validate
     };
-    // let resp = "";
-    // if(response !== undefined){
-    //   resp += "The predictio
-    // }
     return (
       <FormContext.Provider value={context}>
         <form onSubmit={this.handleSubmit} noValidate={true}>
@@ -268,7 +252,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
             {submitSuccess && (
               <div className="alert alert-info" role="alert">
                 {response !== undefined &&(
-                  <p>The sentiment is {response.predictions} with a confidence of {response.confidence}</p>
+                  <p>The sentiment is {response.prediction} with a confidence of {response.confidence}</p>
                 )}
               </div>
             )}
