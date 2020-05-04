@@ -68,11 +68,13 @@ time_linear_predict = t2-t1
 '''
 #print (clf.score(X_test, y_test)) 
 
-with open('sgdclassifier.pkl', 'wb') as f:
+with open('/tmp/sgdclassifier.pkl', 'wb') as f:
     pickle.dump(clf, f)
 
+print("saved model!")
 # and later you can load it
-with open('sgdclassifier.pkl', 'rb') as f:
+'''
+with open('/tmp/sgdclassifier.pkl', 'rb') as f:
     text_clf = pickle.load(f)
 
 tweet = "play"
@@ -81,3 +83,4 @@ tweet=tfidf_vectorizer.transform([tweet])
 labels = [0,1,2]
 print (text_clf.predict(tweet))
 #print (text_clf.score(tweet, y_test))
+'''
