@@ -7,7 +7,10 @@ from sklearn.svm import SVC
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
+from sklearn.svm import LinearSVC
+from sklearn.naive_bayes import GaussianNB
 
 training = pd.read_csv('Airlinetweets.csv')
 
@@ -15,7 +18,7 @@ train_x = training['text']
 train_y = training['type']
 
 macronum=sorted(set(training['type']))
-#print (macronum)
+print (macronum)
 macro_to_id = dict((note, number) for number, note in enumerate(macronum))
 
 def fun(i):
@@ -38,22 +41,37 @@ for tweet in training['text']:
 
 train_x = texts
 
+
+#vectorizer = CountVectorizer()
+#X = vectorizer.fit_transform(train_x)
+tfidf_vectorizer=TfidfVectorizer(use_idf=True)
+train_x=tfidf_vectorizer.fit_transform(train_x)
+
 X_train, X_test, y_train, y_test = train_test_split(train_x, train_y, test_size=0.1, random_state=42)
-text_clf = Pipeline([
-    ('vect', CountVectorizer()),
-    ('tfidf', TfidfTransformer()),
-    ('clf', SVC(gamma='auto')),])
+#X_train = X_train.toarray()
+#X_test = X_test.toarray()
+#text_clf = Pipeline([
+#    ('vect', CountVectorizer()),
+#    ('tfidf', TfidfTransformer()),
+#    ('clf', SVC(gamma='auto')),])
+#clf = SVC(kernel='linear')
+#clf = GaussianNB()
+clf = LinearSVC(random_state=0, tol=1e-5)
+clf.fit(X_train, y_train)
 
-text_clf.fit(X_train, y_train)
+predicted = clf.predict(X_test)
 
-predicted = text_clf.predict(X_test)
-
-print (text_clf.score(X_test, y_test)) 
+print (clf.score(X_test, y_test)) 
 
 with open('sgdclassifier.pkl', 'wb') as f:
-    pickle.dump(text_clf, f)
+    pickle.dump(clf, f)
 
 # and later you can load it
-#with open('filename.pkl', 'rb') as f:
-#    text_clf = pickle.load(f)
-#to make an inference
+with open('sgdclassifier.pkl', 'rb') as f:
+    text_clf = pickle.load(f)
+#print (text_clf.coef_)
+
+tweet = "play"
+tweet=tfidf_vectorizer.transform([tweet])
+#tweet = tweet.toarray()
+print (text_clf.predict(tweet))
