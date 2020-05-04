@@ -133,3 +133,4 @@ with open("model.json", "w") as json_file:
     json_file.write(model_json)
 
 model.save_weights("model_rnn.h5")
+K.clear_session()
