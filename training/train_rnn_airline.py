@@ -118,11 +118,11 @@ print (model.summary())
 #filepath = '/model_rnn.hdf5'
 #model.fit(x_train, y_train, validation_data=(x_val, y_val),epochs=1, batch_size=2)
 cp= ModelCheckpoint('rnn_model_8.hdf5',monitor='val_acc',verbose=1,save_best_only=True)
-history=model.fit(x_train, y_train, validation_data=(x_val, y_val),epochs=3, batch_size=2,callbacks=[cp])
+history=model.fit(x_train, y_train, validation_data=(x_val, y_val),epochs=1, batch_size=32,callbacks=[cp])
 #print (his)
 #model.save(/model_rnn.hdf5)
 model_json = model.to_json()
 with open("model.json", "w") as json_file:
     json_file.write(model_json)
 
-model.save_weights("model.h5")
+model.save_weights("model_rnn.h5")
