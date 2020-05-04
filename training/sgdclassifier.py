@@ -3,10 +3,9 @@ import csv
 import pickle
 import re
 import string
+import time
 from sklearn.svm import SVC
 from sklearn.pipeline import Pipeline
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.svm import LinearSVC
@@ -57,11 +56,17 @@ X_train, X_test, y_train, y_test = train_test_split(train_x, train_y, test_size=
 #clf = SVC(kernel='linear')
 #clf = GaussianNB()
 clf = LinearSVC(random_state=0, tol=1e-5)
+#t0 = time.time()
 clf.fit(X_train, y_train)
-
+#t1 = time.time()
 predicted = clf.predict(X_test)
-
-print (clf.score(X_test, y_test)) 
+'''
+if we want to see time taken for model train and prediction (from performance point of view)
+t2 = time.time()
+time_linear_train = t1-t0
+time_linear_predict = t2-t1
+'''
+#print (clf.score(X_test, y_test)) 
 
 with open('sgdclassifier.pkl', 'wb') as f:
     pickle.dump(clf, f)
@@ -69,9 +74,10 @@ with open('sgdclassifier.pkl', 'wb') as f:
 # and later you can load it
 with open('sgdclassifier.pkl', 'rb') as f:
     text_clf = pickle.load(f)
-#print (text_clf.coef_)
 
 tweet = "play"
 tweet=tfidf_vectorizer.transform([tweet])
 #tweet = tweet.toarray()
+labels = [0,1,2]
 print (text_clf.predict(tweet))
+#print (text_clf.score(tweet, y_test))
