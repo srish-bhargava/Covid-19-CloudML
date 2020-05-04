@@ -4,12 +4,13 @@ import os
 import io
 import flask
 import json
+import pickle
 import keras
 import keras.preprocessing.text as kpt
 from keras.models import model_from_json
 import numpy as np
 from keras.preprocessing.text import Tokenizer
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response
 
 app = flask.Flask(__name__)
 
@@ -30,24 +31,8 @@ def convert_text_to_index_array(text):
             print("'%s' not in training corpus; ignoring." %(word))
     return wordIndices
 
-# read in your saved model structure
-# JSON FOR SNN
-# json_file = open('model.json', 'r')
-# JSON for RNN
-# json_file = open('model_rnn.json', 'r')
-
-
-# loaded_model_json = json_file.read()
-# json_file.close()
-
-# and create a model from that
-# model = model_from_json(loaded_model_json)
-
-# and weight your nodes with your saved values
-# MODEL FOR SNN
-# model.load_weights('model1.h5')
-#model for RNN
-# model.load_weights('model_rnn.h5')
+vectorizer = pickle.load(open('../training/vectorizer.sav', 'rb'))
+classifier = pickle.load(open('../training/sgdclassifier.sav', 'rb'))
 
 #curl -i -X PUT -F name=Test -F filedata=@SomeFile.pdf "http://localhost:5000/"
 @app.route("/")
@@ -65,9 +50,7 @@ def predict():
         # and create a model from that
         model = model_from_json(loaded_model_json)
         model.load_weights('model1.h5')
-        # ensure an image was properly uploaded to our endpoint
-        #if flask.request.method == "POST":
-            
+        
         #check if tweet length is 0, break out
         testArr = convert_text_to_index_array(tweet)
         input_value = tokenizer.sequences_to_matrix([testArr], mode='binary')
@@ -80,24 +63,11 @@ def predict():
         return flask.jsonify(data)
 
     if model_number=="1":
-        train_x = pd.read_csv('transform.csv')
-        tfidf_vectorizer=TfidfVectorizer(use_idf=True)
-        train_x=tfidf_vectorizer.fit_transform(train_x)
-        with open('sgdclassifier.pkl', 'wb') as f:
-            pickle.dump(clf, f)
-        # and later you can load it
-        with open('sgdclassifier.pkl', 'rb') as f:
-            text_clf = pickle.load(f)
-        # tweet = "play"
-        tweet=tfidf_vectorizer.transform([tweet])
-        #tweet = tweet.toarray()
-        labels = [0,1,2]
-        print (text_clf.predict(tweet))
-        return flask.jsonify(text_clf.predict(tweet)
-        #print (text_clf.score(tweet, y_test))
-   
-
-    return
+        data = {}
+        text_vector = vectorizer.transform([tweet])
+        result = classifier.predict(text_vector)
+        data["prediction"] = (labels[result[0]])
+        return flask.jsonify(data)
 
 
 if __name__ == '__main__':
