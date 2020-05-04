@@ -77,8 +77,6 @@ with open('/tmp/sgdclassifier.sav', 'wb') as f:
 print("saved model!")
 # and later you can load it
 
-#with open('sgdclassifier.sav', 'rb') as f:
-#    text_clf = pickle.load(f)
 '''
 vectorizer = pickle.load(open('vectorizer.sav', 'rb'))
 text_clf = pickle.load(open('sgdclassifier.sav', 'rb'))
