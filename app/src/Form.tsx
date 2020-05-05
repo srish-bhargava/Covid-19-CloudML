@@ -85,7 +85,8 @@ export interface IErrors {
 
 export interface IResponse {
   confidence : string,
-  prediction : string
+  prediction : string,
+  predictions: string
 }
 
 export interface IFormState {
@@ -252,9 +253,15 @@ export class Form extends React.Component<IFormProps, IFormState> {
                   <p>
                      {(() => {
                       if(response.confidence){
-                        return "The sentiment is "+response.prediction+" with a confidence of "+response.confidence.substring(0,5)+"%";
+                        if(response.prediction){
+                          return "The sentiment is "+response.prediction+" with a confidence of "+response.confidence.substring(0,5)+"%";
+                        }
+                        return "The sentiment is "+response.predictions+" with a confidence of "+response.confidence.substring(0,5)+"%";
                       }
-                      return "The sentiment is "+response.prediction;
+                      if(response.prediction){
+                        return "The sentiment is "+response.prediction;
+                      }
+                      return "The sentiment is "+response.predictions;
                     })()}
                   </p>
                 )}
