@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment-inference3
+  name: deployment-inference12
   labels:
     apps: proj-inference
 spec:
@@ -20,6 +20,8 @@ spec:
             volumeMounts:
               - mountPath: "/tmp"
                 name: test-store
+              - mountPath: "/tmp1"
+                name: test-store1
             ports:
             - containerPort: 8001
               protocol: TCP
@@ -27,6 +29,9 @@ spec:
           - name: test-store
             hostPath:
               path: "/var/tmp"
+          - name: test-store1
+            hostPath:
+              path: "/var/tmp1"
 
 
       
