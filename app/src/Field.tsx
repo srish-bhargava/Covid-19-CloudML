@@ -23,6 +23,10 @@ export interface IFieldProps {
   /* The drop down items for the field */
   options?: string[];
 
+  optionsHelper?: string[];
+
+  // options?: ({key:string, value:string})[];
+
   /* The field value */
   value?: any;
 
@@ -35,6 +39,7 @@ export const Field: React.SFC<IFieldProps> = ({
   label,
   editor,
   options,
+  optionsHelper,
   value
 }) => {
   /**
@@ -97,10 +102,10 @@ export const Field: React.SFC<IFieldProps> = ({
               className="form-control"
               style={getEditorStyle(context.errors)}
             >
-              {options &&
-                options.map(option => (
+              {options && optionsHelper &&
+                options.map((option,i) => (
                   <option key={option} value={option}>
-                    {option}
+                    {optionsHelper[i]}
                   </option>
                 ))}
             </select>

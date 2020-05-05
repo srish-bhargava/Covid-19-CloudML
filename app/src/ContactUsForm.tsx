@@ -3,12 +3,14 @@ import { Form, IFields, required, maxLength } from "./Form";
 import { Field } from "./Field";
 
 export const ContactUsForm: React.SFC = () => {
+
   const fields: IFields = {
     model_number: {
       id: "model_number",
-      label: "Method",
+      label: "Model",
       editor: "dropdown",
-      options: ["","0", "1"],
+      options : ["", "0", "1"],
+      optionsHelper: ["", "Neural Net", "Linear SVC"],
       validation: { rule: required }
     },
     tweet: {
@@ -20,7 +22,7 @@ export const ContactUsForm: React.SFC = () => {
   };
   return (
     <Form
-      action="https://8d96a99e.ngrok.io/"
+      action="https://1f1fa387.ngrok.io/"
       fields={fields}
       render={() => (
         <React.Fragment>

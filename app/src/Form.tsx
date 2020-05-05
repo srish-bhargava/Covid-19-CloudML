@@ -178,10 +178,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
         this.setState({submitSuccess:true,
         response})
       }
-      // this.setState({ submitSuccess });
-      // if(submitSuccess){
-      //   this.setState({ response : })
-      // }
+      
     }
   };
 
@@ -252,7 +249,14 @@ export class Form extends React.Component<IFormProps, IFormState> {
             {submitSuccess && (
               <div className="alert alert-info" role="alert">
                 {response !== undefined &&(
-                  <p>The sentiment is {response.prediction} with a confidence of {response.confidence}</p>
+                  <p>
+                     {(() => {
+                      if(response.confidence){
+                        return "The sentiment is "+response.prediction+" with a confidence of "+response.confidence.substring(0,5)+"%";
+                      }
+                      return "The sentiment is "+response.prediction;
+                    })()}
+                  </p>
                 )}
               </div>
             )}
