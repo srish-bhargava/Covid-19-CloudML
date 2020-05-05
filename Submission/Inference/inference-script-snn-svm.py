@@ -57,7 +57,7 @@ def predict():
         pred = model.predict(input_value)
         print("%s sentiment; %f%% confidence" % (labels[np.argmax(pred)], pred[0][np.argmax(pred)] * 100))
         data = {}
-        data["predictions"] = str(labels[np.argmax(pred)])
+        data["prediction"] = str(labels[np.argmax(pred)])
         data["confidence"] = str(pred[0][np.argmax(pred)] * 100) + " %"
         print(data)
         return flask.jsonify(data)

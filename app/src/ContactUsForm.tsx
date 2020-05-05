@@ -22,7 +22,7 @@ export const ContactUsForm: React.SFC = () => {
   };
   return (
     <Form
-      action="https://1f1fa387.ngrok.io/"
+      action="http://184.172.233.161:31222/"
       fields={fields}
       render={() => (
         <React.Fragment>
