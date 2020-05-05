@@ -13,7 +13,7 @@ $ kubectl get nodes
 $ kubectl config current-context
 
 
-#2: Create MNIST Training Docker Image (utilize Dockerfile, makeModel.py and requirements.txt inside the training folder):
+#2: Create Training Docker Image (utilize Dockerfile, makeModel.py and requirements.txt inside the training folder):
 
 commands:
 $ docker build -t neuralnet_sentiment .
