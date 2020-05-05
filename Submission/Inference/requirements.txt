@@ -6,3 +6,4 @@ tensorflow
 xlrd==0.9.0
 Flask
 sklearn
+flask-cors

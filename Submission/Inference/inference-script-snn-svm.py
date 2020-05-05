@@ -11,9 +11,9 @@ from keras.models import model_from_json
 import numpy as np
 from keras.preprocessing.text import Tokenizer
 from flask import Flask, jsonify, request, make_response
-
+from flask_cors import CORS
 app = flask.Flask(__name__)
-
+CORS(app)
 tokenizer = Tokenizer(num_words=3000)
 
 # for human-friendly printing

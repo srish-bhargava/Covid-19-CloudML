@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment-inference12
+  name: deployment-inference14
   labels:
     apps: proj-inference
 spec:
