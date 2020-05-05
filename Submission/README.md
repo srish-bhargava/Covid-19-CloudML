@@ -67,6 +67,6 @@ $ kubectl describe service/inference-service3
 
 Go to 
 http://<EXTERNAL IP>:<NODEPORT>/?name="TWITTER TO TEST"
-http://184.172.233.161:30809/?name="terrible awful horrific"&model_number=0
+http://184.172.233.161:31472/?model_number=0&name="terrible horrific awful"
 
 #9: KubeConfig and certificate file (.pem) found in ~/.bluemix/plugins/container-service/clusters/ have been provided in /Submission/KubeConfig_Certificates - they are called ca-hou02-mycluster-hw4.pem and kube-config-hou02-mycluster-hw4.yml - Please disregard the "hw4" reference - this comes from the fact that I created and named this cluster when doing hw4 and used it for subsequent assigments.
