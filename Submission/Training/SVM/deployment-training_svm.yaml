@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: deployment-training-svm2
+spec:
+  template:
+    spec:
+      volumes:
+        - name: test-store1
+          hostPath:
+            path: "/var/tmp1"
+      containers:
+        - name: tweets-training
+          image: srishti95/svmclassifier:1.0.2
+          volumeMounts:
+            - mountPath: "/tmp"
+              name: test-store1
+          ports:
+          - containerPort: 8001
+      restartPolicy: Never
+  backoffLimit: 3

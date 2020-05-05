@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: deployment-training-snn12
+spec:
+  template:
+    spec:
+      volumes:
+        - name: test-store
+          hostPath:
+            path: "/var/tmp"
+      containers:
+        - name: tweets-training
+          image: ds1952/neuralnet_sentiment:latest
+          volumeMounts:
+            - mountPath: "/tmp"
+              name: test-store
+          ports:
+          - containerPort: 8001
+      restartPolicy: Never
+  backoffLimit: 3
